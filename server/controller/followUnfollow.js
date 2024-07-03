@@ -57,26 +57,32 @@ const addFriend = async (req, res) => {
     }
 };
 
-const getFriendRequest =async(req,res) =>{
+const getFriendRequest = async (req, res) => {
     try {
         const receiverId = req.params.id;
-        const getRequest = await FollowAndUnfollowUser.find({user:receiverId})
+        const getRequest = await FollowAndUnfollowUser.find({receiverId})
         if(!getRequest){
             return res.status(404).json({success:false,message:"Unable to get the follow request"})
         }
-        return res.status(200).json({success:true,message:"Follow req sent successfully"},getRequest)
+
+        return res.status(200).json({ success: true, message: "Success", getRequest });
     } catch (error) {
-        return res.status(404).json({success:false,message:error})
+        return res.status(500).json({ success: false, message: error.message });
     }
-}
+};
+
+
 
 // Accept friend request
 const acceptFriendRequest = async (req, res) => {
     try {
-        const reqId = req.params.id;
-        const acceptReq = await FollowAndUnfollowUser.findByIdAndUpdate(reqId, {
+        // you doesnot recieve the reqId , you will recieve the senderId and reciever Id
+        const reqId = req.params.id; //wrong
+        const acceptReq = await FollowAndUnfollowUser.findByIdAndUpdate(reqId, { //wrong
             status: "Accepted"
         }, { new: true });
+
+        // update the both users( sender and reciver ) friend list i.e. make status of them to "Accepted"
 
         if (!acceptReq) {
             return res.status(404).json({ success: false, message: "Unable to accept the friend request" });
@@ -90,8 +96,11 @@ const acceptFriendRequest = async (req, res) => {
 
 const rejectFriendReq = async(req,res) =>{
     try {
-        const reqId = req.params.id;
-        const rejectReq = await FollowAndUnfollowUser.findByIdAndDelete({_id:reqId})
+        // you doesnot recieve the reqId , you will recieve the senderId and reciever Id 
+        const reqId = req.params.id; //wrong
+        const rejectReq = await FollowAndUnfollowUser.findByIdAndDelete({_id:reqId}) //wrong
+
+        // update the both users( sender and reciver ) friend list i.e. delete from both
 
         if(!rejectReq){
             return res.status(404).json({success:false,message:"Unable to reject the user request"})
@@ -102,5 +111,7 @@ const rejectFriendReq = async(req,res) =>{
         return res.status({success:false,message:"Rejected"})
     }
 }
+
+
 
 module.exports = {addFriend,getFriendRequest,acceptFriendRequest,rejectFriendReq}
