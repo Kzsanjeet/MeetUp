@@ -76,7 +76,7 @@ const getFriendRequest = async (req, res) => {
 // Accept friend request
 const acceptFriendRequest = async (req, res) => {
     try {
-        // you doesnot recieve the reqId , you will recieve the senderId and reciever Id
+        // you donot recieve the reqId , you will recieve the senderId and reciever Id
         const reqId = req.params.id; //wrong
         const acceptReq = await FollowAndUnfollowUser.findByIdAndUpdate(reqId, { //wrong
             status: "Accepted"
@@ -96,7 +96,7 @@ const acceptFriendRequest = async (req, res) => {
 
 const rejectFriendReq = async(req,res) =>{
     try {
-        // you doesnot recieve the reqId , you will recieve the senderId and reciever Id 
+        // you donot recieve the reqId , you will recieve the senderId and reciever Id 
         const reqId = req.params.id; //wrong
         const rejectReq = await FollowAndUnfollowUser.findByIdAndDelete({_id:reqId}) //wrong
 
